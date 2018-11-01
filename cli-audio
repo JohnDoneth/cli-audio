@@ -4,9 +4,14 @@ from front.FrontEnd import FrontEnd
 from player.Player import Player
 from curses import wrapper
 
+
 def main():
+    """
+    Entry point of the program
+    """
     player = Player()
     front_end = FrontEnd(player)
+
 
 if __name__ == "__main__":
     main()
