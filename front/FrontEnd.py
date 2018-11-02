@@ -3,15 +3,17 @@ import curses.textpad
 
 import sys
 from exceptions import CLIAudioScreenSizeError, CLIAudioFileError
-from front.ListView import ListView, ListColumn
+from front.ListView import ListView, ListColumn, NavAction
+
 
 class FrontEnd:
     """
     The frontend of the program using curses
     """
-
     def __init__(self, player):
         self.stdscr = curses.initscr()
+
+        self.subwindow = None
 
         # Try to use colors, but don't crash if we can't.
         try:
@@ -28,33 +30,90 @@ class FrontEnd:
 
         curses.wrapper(self.menu)
 
+
+    def display(self):
+        """
+        Draws the master window's text
+        """
+        #self.stdscr.box()
+
+        #self.stdscr.clear()
+
+        #max_height, max_width = self.stdscr.getmaxyx()
+        #border_win = curses.newwin(max_height-2, max_width-2, 1, 1)
+        #border_win.border()
+        #border_win.refresh()
+
+        self.stdscr.clear()
+
+        self.stdscr.addstr(1, 3, "cli-audio")
+        self.stdscr.addstr(5, 10, "c - Change current song")
+        self.stdscr.addstr(6, 10, "p - Play/Pause")
+        self.stdscr.addstr(7, 10, "l - Library")
+        self.stdscr.addstr(9, 10, "ESC - Quit")
+        self.update_song()
+
+        if self.subwindow is not None:
+            self.subwindow.display()
+
+        self.stdscr.refresh()
+
     def menu(self, args):
         """
-
         :param args:
         """
+
+        self.display()
+
         try:
-            self.stdscr.border()
-            self.stdscr.addstr(0, 2, "cli-audio")
-            self.stdscr.addstr(5, 10, "c - Change current song")
-            self.stdscr.addstr(6, 10, "p - Play/Pause")
-            self.stdscr.addstr(7, 10, "l - Library")
-            self.stdscr.addstr(9, 10, "ESC - Quit")
-            self.update_song()
-            self.stdscr.refresh()
             while True:
                 c = self.stdscr.getch()
-                if c == 27:
-                    self.quit()
+
+                if c == curses.KEY_RESIZE:
+                    y, x = self.stdscr.getmaxyx()
+                    self.stdscr.clear()
+                    curses.resize_term(x, y)
+                    self.display()
+
+                    if self.subwindow is not None:
+                        self.subwindow.display()
+
+                    self.stdscr.refresh()
+
+                elif c == 27:
+                    if self.subwindow is not None:
+                        self.subwindow.navigate(NavAction.Escape)
+                        self.subwindow = None
+                    else:
+                        self.quit()
+
                 elif c == ord('p'):
                     self.player.pause()
+
                 elif c == ord('c'):
                     self.change_song()
                     self.update_song()
                     self.stdscr.touchwin()
                     self.stdscr.refresh()
+
+                elif c == curses.KEY_UP:
+                    if self.subwindow is not None:
+                        self.subwindow.navigate(NavAction.Up)
+
+                elif c == curses.KEY_DOWN:
+                    if self.subwindow is not None:
+                        self.subwindow.navigate(NavAction.Down)
+
+                # The ASCII value for '\n'. Do not use curses.KEY_ENTER as that is the num-pad enter key
+                elif c == 10:
+                    if self.subwindow is not None:
+                        self.subwindow.navigate(NavAction.Select)
+
                 elif c == ord('l'):
-                    self.display_library()
+                    self.choose_from_library()
+
+
+                self.display()
 
         except curses.error:
             raise CLIAudioScreenSizeError("Curses needs more space!")
@@ -104,7 +163,10 @@ class FrontEnd:
 
         return curses.newwin(height, width, int(y), int(x))
 
-    def display_library(self):
+    def library_song_selected(self, song_data):
+        print(song_data)
+
+    def choose_from_library(self):
         """
         Display the music library for the user
         """
@@ -124,8 +186,9 @@ class FrontEnd:
 
         columns = [filenames]
 
-        list_view = ListView(library_window, columns)
+        list_view = ListView(library_window, columns, self.library_song_selected)
 
-        library_window.refresh()
+        #list_view.display()
+        #self.stdscr.refresh()
 
-        self.stdscr.refresh()
+        self.subwindow = list_view
