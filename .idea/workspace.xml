@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bce6c846-4a85-4a31-9e94-3a07a8b3ca68" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exceptions/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli-audio" beforeDir="false" afterPath="$PROJECT_DIR$/cli-audio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/ListView.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/FrontEnd.py" beforeDir="false" afterPath="$PROJECT_DIR$/front/FrontEnd.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player/Player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player/Player.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,42 +28,57 @@
           <entry key="cli-audio" value="1" />
           <entry key="gitignore" value="1" />
           <entry key="md" value="2" />
-          <entry key="py" value="9" />
+          <entry key="py" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Markdown" value="2" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="10" />
+          <entry key="Python" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="cli-audio" value="28" />
-          <entry key="dummy" value="42" />
+          <entry key="dummy" value="59" />
           <entry key="gitignore" value="6" />
-          <entry key="py" value="1855" />
+          <entry key="py" value="3247" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="48" />
-          <entry key="Python" value="1883" />
+          <entry key="PLAIN_TEXT" value="65" />
+          <entry key="Python" value="3275" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/FrontEnd.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="376">
+              <caret line="45" column="31" selection-start-line="44" selection-start-column="12" selection-end-line="56" selection-end-column="42" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1541046406570" expanded="true" signature="2650:2998" ph="..." />
+                <marker date="1541177087001" expanded="true" signature="2697:3045" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/front/ListView.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="444">
+              <caret line="53" column="21" selection-start-line="53" selection-start-column="21" selection-end-line="53" selection-end-column="21" />
+              <folding>
+                <element signature="e#47#66#0" expanded="true" />
+                <marker date="1541177401320" expanded="true" signature="231:264" ph="..." />
+                <marker date="1541177401320" expanded="true" signature="279:335" ph="..." />
+                <marker date="1541177401320" expanded="true" signature="279:336" ph="..." />
               </folding>
             </state>
           </provider>
@@ -105,7 +115,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/player/Player.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
+            <state relative-caret-position="87">
               <caret line="57" column="46" lean-forward="true" selection-start-line="57" selection-start-column="46" selection-end-line="57" selection-end-column="46" />
               <folding>
                 <element signature="e#61#75#0" expanded="true" />
@@ -164,6 +174,7 @@
         <option value="$PROJECT_DIR$/media/.gitignore" />
         <option value="$PROJECT_DIR$/exceptions/__init__.py" />
         <option value="$PROJECT_DIR$/front/FrontEnd.py" />
+        <option value="$PROJECT_DIR$/front/ListView.py" />
       </list>
     </option>
   </component>
@@ -317,7 +328,7 @@
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" weight="0.48012233" />
-      <window_info anchor="bottom" id="Terminal" weight="0.32874617" />
+      <window_info anchor="bottom" id="Terminal" weight="0.3282123" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32874617" />
@@ -405,7 +416,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/player/Player.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
+        <state relative-caret-position="87">
           <caret line="57" column="46" lean-forward="true" selection-start-line="57" selection-start-column="46" selection-end-line="57" selection-end-column="46" />
           <folding>
             <element signature="e#61#75#0" expanded="true" />
@@ -416,11 +427,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/front/FrontEnd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="376">
+          <caret line="45" column="31" selection-start-line="44" selection-start-column="12" selection-end-line="56" selection-end-column="42" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1541046406570" expanded="true" signature="2650:2998" ph="..." />
+            <marker date="1541177087001" expanded="true" signature="2697:3045" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/ListView.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="53" column="21" selection-start-line="53" selection-start-column="21" selection-end-line="53" selection-end-column="21" />
+          <folding>
+            <element signature="e#47#66#0" expanded="true" />
+            <marker date="1541177401320" expanded="true" signature="231:264" ph="..." />
+            <marker date="1541177401320" expanded="true" signature="279:335" ph="..." />
+            <marker date="1541177401320" expanded="true" signature="279:336" ph="..." />
           </folding>
         </state>
       </provider>

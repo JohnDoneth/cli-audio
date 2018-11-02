@@ -3,7 +3,7 @@ import curses.textpad
 
 import sys
 from exceptions import CLIAudioScreenSizeError, CLIAudioFileError
-
+from front.ListView import ListView, ListColumn
 
 class FrontEnd:
     """
@@ -108,9 +108,24 @@ class FrontEnd:
         """
         Display the music library for the user
         """
+
+        import glob
+        import os
+
+        filenames = ListColumn()
+        filenames.header = "Filename"
+
+        for file in glob.glob('./media/*.wav'):
+            filenames.items.append(os.path.basename(file))
+
         library_window = self.centered_window()
         library_window.border()
-        library_window.addstr(0, 2, "Library Viewer:")
+        library_window.addstr(0, 2, "Library")
+
+        columns = [filenames]
+
+        list_view = ListView(library_window, columns)
+
         library_window.refresh()
 
         self.stdscr.refresh()
