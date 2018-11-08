@@ -35,27 +35,20 @@ class FrontEnd:
         """
         Draws the master window's text
         """
-        #self.stdscr.box()
-
-        #self.stdscr.clear()
-
-        #max_height, max_width = self.stdscr.getmaxyx()
-        #border_win = curses.newwin(max_height-2, max_width-2, 1, 1)
-        #border_win.border()
-        #border_win.refresh()
-
-        self.stdscr.clear()
+        self.stdscr.erase()
 
         self.stdscr.addstr(1, 3, "cli-audio")
         self.stdscr.addstr(5, 10, "c - Change current song")
         self.stdscr.addstr(6, 10, "p - Play/Pause")
         self.stdscr.addstr(7, 10, "l - Library")
         self.stdscr.addstr(9, 10, "ESC - Quit")
+
         self.update_song()
 
         if self.subwindow is not None:
             self.subwindow.display()
 
+        self.stdscr.touchwin()
         self.stdscr.refresh()
 
     def menu(self, args):
@@ -78,8 +71,6 @@ class FrontEnd:
                     if self.subwindow is not None:
                         self.subwindow.display()
 
-                    self.stdscr.refresh()
-
                 elif c == 27:
                     if self.subwindow is not None:
                         self.subwindow.navigate(NavAction.Escape)
@@ -93,16 +84,6 @@ class FrontEnd:
                 elif c == ord('c'):
                     self.change_song()
                     self.update_song()
-                    self.stdscr.touchwin()
-                    self.stdscr.refresh()
-
-                elif c == curses.KEY_UP:
-                    if self.subwindow is not None:
-                        self.subwindow.navigate(NavAction.Up)
-
-                elif c == curses.KEY_DOWN:
-                    if self.subwindow is not None:
-                        self.subwindow.navigate(NavAction.Down)
 
                 # The ASCII value for '\n'. Do not use curses.KEY_ENTER as that is the num-pad enter key
                 elif c == 10:
@@ -111,7 +92,6 @@ class FrontEnd:
 
                 elif c == ord('l'):
                     self.choose_from_library()
-
 
                 self.display()
 
@@ -186,9 +166,10 @@ class FrontEnd:
 
         columns = [filenames]
 
+        #print(columns)
+
         list_view = ListView(library_window, columns, self.library_song_selected)
 
         #list_view.display()
-        #self.stdscr.refresh()
 
         self.subwindow = list_view

@@ -32,13 +32,38 @@ class ListView:
         self.window = window
         self.columns = columns
         self.select_callback = select_callback
+
+        curses.panel.new_panel(self.window)
+
         self.display()
+
+        while True:
+            c = self.window.getch()
+
+            print(c)
+
+            if c == curses.KEY_UP:
+                print("up")
+                self.navigate(NavAction.Up)
+
+            elif c == curses.KEY_DOWN:
+                print("down")
+                self.navigate(NavAction.Down)
+
+            elif c == 27:
+                break
+
+            self.display()
+
+
 
     def display(self):
         # Hide cursor
         curses.curs_set(0)
 
-        curses.panel.new_panel(self.window)
+        self.window.erase()
+
+
 
         max_height, max_width = self.window.getmaxyx()
 
@@ -57,6 +82,7 @@ class ListView:
                     # add str @ y, x
                     self.window.addstr(2 + j, 1 + (i * column_width), item)
 
+        self.window.touchwin()
         self.window.refresh()
 
     def navigate(self, action):
@@ -79,7 +105,8 @@ class ListView:
 
         self.calc_index_bounds()
         self.display()
-        self.window.refresh()
+
+        print("navigated")
 
     def calc_index_bounds(self):
         if self.index < 0:
