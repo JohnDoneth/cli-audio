@@ -6,6 +6,7 @@ import curses.panel
 from _curses import A_REVERSE, A_BLINK
 from enum import Enum
 
+import util
 
 class NavAction(Enum):
     Up = 1
@@ -18,7 +19,6 @@ class ListColumn:
     header = ""
     items = []
 
-
 class ListView:
     """
     Displays a list with detail columns
@@ -26,36 +26,48 @@ class ListView:
 
     window = None
 
-    def __init__(self, window, columns, select_callback):
+    def __init__(self, parent, columns, select_callback):
+
+        self.parent = parent
+
+        self.window = util.new_centered_window(parent)
+        self.window.border()
+        self.window.addstr(0, 2, "Library")
 
         self.index = 0
-        self.window = window
         self.columns = columns
         self.select_callback = select_callback
 
         curses.panel.new_panel(self.window)
+
+        # Allow curses to translate some keys in enum keys
+        self.window.keypad(True)
 
         self.display()
 
         while True:
             c = self.window.getch()
 
-            print(c)
-
             if c == curses.KEY_UP:
-                print("up")
                 self.navigate(NavAction.Up)
 
             elif c == curses.KEY_DOWN:
-                print("down")
                 self.navigate(NavAction.Down)
+
+            elif c == curses.KEY_RESIZE:
+                #y, x = self.parent.getmaxyx()
+                #self.parent.clear()
+                #curses.resize_term(x, y)
+                self.display()
+
+            # The ASCII value for '\n'. Do not use curses.KEY_ENTER as that is the num-pad enter key
+            elif c == 10:
+                self.navigate(NavAction.Select)
 
             elif c == 27:
                 break
 
             self.display()
-
-
 
     def display(self):
         # Hide cursor
@@ -63,7 +75,7 @@ class ListView:
 
         self.window.erase()
 
-
+        self.window.border()
 
         max_height, max_width = self.window.getmaxyx()
 

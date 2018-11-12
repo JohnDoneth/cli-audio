@@ -35,18 +35,17 @@ class FrontEnd:
         """
         Draws the master window's text
         """
-        self.stdscr.erase()
+        self.stdscr.clear()
+
+        self.stdscr.border()
 
         self.stdscr.addstr(1, 3, "cli-audio")
-        self.stdscr.addstr(5, 10, "c - Change current song")
-        self.stdscr.addstr(6, 10, "p - Play/Pause")
-        self.stdscr.addstr(7, 10, "l - Library")
-        self.stdscr.addstr(9, 10, "ESC - Quit")
+        self.stdscr.addstr(5, 5, "c - Change current song")
+        self.stdscr.addstr(6, 5, "p - Play/Pause")
+        self.stdscr.addstr(7, 5, "l - Library")
+        self.stdscr.addstr(9, 5, "ESC - Quit")
 
         self.update_song()
-
-        if self.subwindow is not None:
-            self.subwindow.display()
 
         self.stdscr.touchwin()
         self.stdscr.refresh()
@@ -68,15 +67,8 @@ class FrontEnd:
                     curses.resize_term(x, y)
                     self.display()
 
-                    if self.subwindow is not None:
-                        self.subwindow.display()
-
                 elif c == 27:
-                    if self.subwindow is not None:
-                        self.subwindow.navigate(NavAction.Escape)
-                        self.subwindow = None
-                    else:
-                        self.quit()
+                    self.quit()
 
                 elif c == ord('p'):
                     self.player.pause()
@@ -84,11 +76,6 @@ class FrontEnd:
                 elif c == ord('c'):
                     self.change_song()
                     self.update_song()
-
-                # The ASCII value for '\n'. Do not use curses.KEY_ENTER as that is the num-pad enter key
-                elif c == 10:
-                    if self.subwindow is not None:
-                        self.subwindow.navigate(NavAction.Select)
 
                 elif c == ord('l'):
                     self.choose_from_library()
@@ -102,8 +89,8 @@ class FrontEnd:
         """
         Update the GUI string that represents what song is playing
         """
-        self.stdscr.addstr(15, 10, "                                        ")
-        self.stdscr.addstr(15, 10, "Now playing: " + self.player.get_current_song())
+        self.stdscr.addstr(15, 5, "                                        ")
+        self.stdscr.addstr(15, 5, "Now playing: " + self.player.get_current_song())
 
     def change_song(self):
         """
@@ -129,22 +116,8 @@ class FrontEnd:
         self.player.stop()
         exit()
 
-    def centered_window(self):
-        """
-        Creates a centered window
-        """
-        max_height, max_width = self.stdscr.getmaxyx()
-
-        # height, width, begin_y, begin_x
-        width = int(max_width / 2.0)
-        height = int(max_height / 2.0)
-        y = height / 2.0
-        x = width / 2.0
-
-        return curses.newwin(height, width, int(y), int(x))
-
-    def library_song_selected(self, song_data):
-        print(song_data)
+    def library_song_selected(self, song):
+        print(song)
 
     def choose_from_library(self):
         """
@@ -160,15 +133,13 @@ class FrontEnd:
         for file in glob.glob('./media/*.wav'):
             filenames.items.append(os.path.basename(file))
 
-        library_window = self.centered_window()
-        library_window.border()
-        library_window.addstr(0, 2, "Library")
+
 
         columns = [filenames]
 
         #print(columns)
 
-        list_view = ListView(library_window, columns, self.library_song_selected)
+        list_view = ListView(self.stdscr, columns, self.library_song_selected)
 
         #list_view.display()
 

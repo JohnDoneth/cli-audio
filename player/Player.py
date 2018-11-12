@@ -13,7 +13,7 @@ class Player:
         # Instantiate PyAudio (1)
         self.p = pyaudio.PyAudio()
 
-        self.currentSong = "Nothing playing."
+        self.currentSong = "N/A"
         self.paused = True
         self.position = 0
         self.stream = None
