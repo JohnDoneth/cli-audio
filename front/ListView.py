@@ -42,7 +42,7 @@ class ListView:
 
         self.window = util.new_centered_window(parent)
         self.window.border()
-        self.window.addstr(0, 2, "Library")
+
 
         self.index = 0
         self.columns = columns
@@ -73,6 +73,7 @@ class ListView:
             # The ASCII value for '\n'. Do not use curses.KEY_ENTER as that is the num-pad enter key
             elif c == 10:
                 self.navigate(NavAction.Select)
+                break
 
             elif c == 27:
                 break
@@ -88,6 +89,8 @@ class ListView:
 
         self.window.clear()
         self.window.border()
+        self.window.addstr(0, 2, "Library")
+        self.window.move(0, 0)
 
         max_height, max_width = self.window.getmaxyx()
 
@@ -99,13 +102,17 @@ class ListView:
             # Display each item
             for j, item in enumerate(column.items):
 
+                print(i, j)
+
+                # is this line currently selected?
                 if self.index == j:
-                    # add str @ y, x
+                    # add str @ y, x with the selected text style
                     self.window.addstr(2 + j, 1 + (i * column_width), item, A_REVERSE)
                 else:
-                    # add str @ y, x
+                    # add str @ y, x with the unselected text style
                     self.window.addstr(2 + j, 1 + (i * column_width), item)
 
+        self.window.redrawwin()
         self.window.touchwin()
         self.window.refresh()
 
@@ -121,7 +128,6 @@ class ListView:
             self.index = self.index - 1
 
         elif action == NavAction.Select:
-            print("selected")
             # construct the row list to pass to the function
             #row = []
             #for column in self.columns:
@@ -133,7 +139,6 @@ class ListView:
         self.calc_index_bounds()
         self.display()
 
-        print("navigated")
 
     def calc_index_bounds(self):
         """

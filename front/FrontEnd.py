@@ -131,6 +131,7 @@ class FrontEnd:
 
         file_names = ListColumn()
         file_names.header = "Filename"
+        file_names.items = []
 
         for file in glob.glob('./media/*.wav'):
             file_names.items.append(os.path.basename(file))
