@@ -1,19 +1,20 @@
 import curses
 import curses.textpad
 
+import glob
+import os
 import sys
 from exceptions import CLIAudioScreenSizeError, CLIAudioFileError
 from front.ListView import ListView, ListColumn, NavAction
-
 
 class FrontEnd:
     """
     The frontend of the program using curses
     """
     def __init__(self, player):
-        self.stdscr = curses.initscr()
 
-        self.subwindow = None
+        # Create the curses screen
+        self.stdscr = curses.initscr()
 
         # Try to use colors, but don't crash if we can't.
         try:
@@ -29,7 +30,6 @@ class FrontEnd:
             self.update_song()
 
         curses.wrapper(self.menu)
-
 
     def display(self):
         """
@@ -117,30 +117,26 @@ class FrontEnd:
         exit()
 
     def library_song_selected(self, song):
+        """
+        :param song: The song name to play that resides in the media folder
+        """
         print(song)
+
+        self.update_song()
 
     def choose_from_library(self):
         """
         Display the music library for the user
         """
 
-        import glob
-        import os
-
-        filenames = ListColumn()
-        filenames.header = "Filename"
+        file_names = ListColumn()
+        file_names.header = "Filename"
 
         for file in glob.glob('./media/*.wav'):
-            filenames.items.append(os.path.basename(file))
+            file_names.items.append(os.path.basename(file))
 
-
-
-        columns = [filenames]
-
-        #print(columns)
+        columns = [file_names]
 
         list_view = ListView(self.stdscr, columns, self.library_song_selected)
 
-        #list_view.display()
-
-        self.subwindow = list_view
+        del list_view

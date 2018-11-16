@@ -1,5 +1,5 @@
 """
-Columns to be displayed in a ListView
+ListView object that displays a list of columns and runs a callback on a selection
 """
 
 import curses.panel
@@ -8,7 +8,11 @@ from enum import Enum
 
 import util
 
+
 class NavAction(Enum):
+    """
+    The navigation actions that can be applied to a ListView
+    """
     Up = 1
     Down = 2
     Select = 3
@@ -16,15 +20,21 @@ class NavAction(Enum):
 
 
 class ListColumn:
+    """
+    The columns passed to the ListView constructor to apply
+    """
     header = ""
     items = []
+
 
 class ListView:
     """
     Displays a list with detail columns
     """
-
     window = None
+
+    def __del__(self):
+        del self.window
 
     def __init__(self, parent, columns, select_callback):
 
@@ -70,11 +80,13 @@ class ListView:
             self.display()
 
     def display(self):
+        """
+        Displays the column's header and contents
+        """
         # Hide cursor
         curses.curs_set(0)
 
-        self.window.erase()
-
+        self.window.clear()
         self.window.border()
 
         max_height, max_width = self.window.getmaxyx()
@@ -98,7 +110,10 @@ class ListView:
         self.window.refresh()
 
     def navigate(self, action):
-
+        """
+        Accepts an action to apply to the current ListView state
+        :param action: The action to execute
+        """
         if action == NavAction.Down:
             self.index = self.index + 1
 
@@ -108,12 +123,12 @@ class ListView:
         elif action == NavAction.Select:
             print("selected")
             # construct the row list to pass to the function
-            row = []
-            for column in self.columns:
-                row.append(column.items[self.index])
+            #row = []
+            #for column in self.columns:
+            #    row.append(column.items[self.index])
 
-            # pass the row list to the function
-            self.select_callback(row)
+            # pass the selected song to the callback function
+            self.select_callback(self.columns[0].items[self.index])
 
         self.calc_index_bounds()
         self.display()
@@ -121,6 +136,9 @@ class ListView:
         print("navigated")
 
     def calc_index_bounds(self):
+        """
+        Utility method to make sure the cursor stays within the bounds of the list
+        """
         if self.index < 0:
             self.index = 0
 
