@@ -2,15 +2,24 @@
 
 from front.FrontEnd import FrontEnd
 from player.Player import Player
-from curses import wrapper
-
+from exceptions import CLIAudioScreenSizeError, CLIAudioFileError, CLIAudioException
 
 def main():
     """
     Entry point of the program
     """
     player = Player()
-    front_end = FrontEnd(player)
+
+    try:
+        front_end = FrontEnd(player)
+    except CLIAudioScreenSizeError:
+        print("cli-audio: Curses needs more real estate! It ain't free. ¯\_(O_O)_/¯")
+
+    except CLIAudioFileError:
+        print("cli-audio: could not play that file. Does it exist?")
+
+    except CLIAudioException:
+        print("cli-audio: A general exception occurred!")
 
 
 if __name__ == "__main__":

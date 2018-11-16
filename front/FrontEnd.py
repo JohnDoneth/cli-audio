@@ -29,7 +29,10 @@ class FrontEnd:
             self.player.play(sys.argv[1])
             self.update_song()
 
-        curses.wrapper(self.menu)
+        try:
+            curses.wrapper(self.menu)
+        except curses.error:
+            raise CLIAudioScreenSizeError("Curses needs more space!")
 
     def display(self):
         """
@@ -57,40 +60,41 @@ class FrontEnd:
 
         self.display()
 
-        try:
-            while True:
-                c = self.stdscr.getch()
+        while True:
+            c = self.stdscr.getch()
 
-                if c == curses.KEY_RESIZE:
-                    y, x = self.stdscr.getmaxyx()
-                    self.stdscr.clear()
-                    curses.resize_term(x, y)
-                    self.display()
-
-                elif c == 27:
-                    self.quit()
-
-                elif c == ord('p'):
-                    self.player.pause()
-
-                elif c == ord('c'):
-                    self.change_song()
-                    self.update_song()
-
-                elif c == ord('l'):
-                    self.choose_from_library()
-
+            if c == curses.KEY_RESIZE:
+                y, x = self.stdscr.getmaxyx()
+                self.stdscr.clear()
+                curses.resize_term(x, y)
                 self.display()
 
-        except curses.error:
-            raise CLIAudioScreenSizeError("Curses needs more space!")
+            elif c == 27:
+                self.quit()
+
+            elif c == ord('p'):
+                self.player.pause()
+
+            #elif c == ord('c'):
+            #    self.change_song()
+            #    self.update_song()
+
+            elif c == ord('l'):
+                self.choose_from_library()
+                self.update_song()
+
+            self.display()
+
 
     def update_song(self):
         """
         Update the GUI string that represents what song is playing
         """
         self.stdscr.addstr(15, 5, "                                        ")
-        self.stdscr.addstr(15, 5, "Now playing: " + self.player.get_current_song())
+        if self.player.paused:
+            self.stdscr.addstr(15, 5, "Paused: " + self.player.get_current_song())
+        else:
+            self.stdscr.addstr(15, 5, "Now playing: " + self.player.get_current_song())
 
     def change_song(self):
         """
@@ -122,7 +126,9 @@ class FrontEnd:
         """
         print(song)
 
-        self.update_song()
+        self.player.stop()
+        self.player.play("./media/" + song)
+
 
     def choose_from_library(self):
         """

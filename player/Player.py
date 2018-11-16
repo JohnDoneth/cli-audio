@@ -2,7 +2,8 @@
 
 import pyaudio
 import wave
-import time
+
+from exceptions import CLIAudioFileError
 
 
 class Player:
@@ -49,7 +50,11 @@ class Player:
         """
         self.paused = False
         self.currentSong = track
-        self.wf = wave.open(track, 'rb')
+
+        try:
+            self.wf = wave.open(track, 'rb')
+        except Exception as e:
+            raise CLIAudioFileError(e)
 
         # open self.stream using callback (3)
         self.stream = self.p.open(format=self.p.get_format_from_width(self.wf.getsampwidth()),
